@@ -1,0 +1,240 @@
+* {
+  padding: 0;
+  margin: 0;
+  outline: none;
+  border: none;
+  font-family: "Arial", sans-serif;
+  box-sizing: border-box;
+}
+
+:root {
+  --dark: #000000;
+  --light: #00c8c8;
+  --lighter: #002020;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--dark);
+}
+
+#stage {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  position: relative;
+}
+
+.wall {
+  position: absolute;
+  background-color: var(--dark);
+  border: 2px var(--light) solid;
+  z-index: -2;
+}
+
+.wall.top {
+  width: 100vw;
+  height: 100vw;
+  top: 0;
+  transform-origin: top center;
+  transform: rotateX(-90deg);
+  border-top: none;
+}
+
+.wall.bottom {
+  width: 100vw;
+  height: 100vw;
+  bottom: 0;
+  transform-origin: bottom center;
+  transform: rotateX(90deg);
+  border-bottom: none;
+}
+
+.wall.left {
+  width: 100vw;
+  height: 100vh;
+  left: 0;
+  transform-origin: center left;
+  transform: rotateY(90deg);
+  border-left: none;
+}
+
+.wall.right {
+  width: 100vw;
+  height: 100vh;
+  right: 0;
+  transform-origin: center right;
+  transform: rotateY(-90deg);
+  border-right: none;
+}
+
+.face {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  position: absolute;
+}
+
+.front {
+  transform: translateZ(-20vw);
+  transition: transform 2s ease-out, opacity 0s;
+  z-index: 2;
+}
+
+.back {
+  transform: translateZ(-100vw);
+  transition: transform 2s ease-out;
+  z-index: 1;
+}
+
+.behind {
+  transform: translateZ(60vw);
+  z-index: 3;
+  opacity: 0;
+  transition: transform 2s ease-out, opacity 0s 0.5s;
+}
+
+.door {
+  background-color: var(--dark);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  border: 2px var(--light) solid;
+  width: calc(100% / 6);
+  transform-origin: left center;
+  transition: 0.5s ease-in-out;
+}
+
+.door span {
+  font-size: 5em;
+  color: var(--light);
+}
+
+.door.hoverable {
+  cursor: pointer;
+}
+
+.door.hoverable:hover {
+  background-color: var(--lighter);
+}
+
+.door.open {
+  transform: rotateY(90deg);
+}
+
+#msg-box,
+#sort-box,
+#balloon {
+  width: 83%;
+  padding: 1em;
+  background-color: var(--light);
+  color: var(--dark);
+  border: 4px var(--dark) solid;
+  border-radius: 0.5em;
+  box-shadow: 0 0 0 4px var(--light);
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  transform: translateX(-50%) translateY(-50%);
+  left: 50%;
+  top: 70%;
+}
+
+#msg-box::before {
+  content: "";
+  background: url("./bear_plain.svg");
+  background-size: 10em 7.5em;
+  width: 10em;
+  height: 7.5em;
+  position: absolute;
+  top: -7.5em;
+  left: 1em;
+}
+
+#msg-box p,
+#sort-box p {
+  font-size: 2em;
+}
+
+#msg-box button,
+#sort-box button {
+  margin-left: 2em;
+  width: 4em;
+  height: 2em;
+  background-color: var(--lighter);
+  border-radius: 0.5em;
+  box-shadow: 0 0.25em 0 var(--dark);
+  cursor: pointer;
+}
+
+#msg-box button::before,
+#sort-box button::before {
+  content: ">>";
+  color: var(--light);
+  font-size: 1.5em;
+}
+
+#msg-box button:active,
+#sort-box button:active {
+  margin-top: 0.15em;
+  box-shadow: 0 0.15em 0 var(--dark);
+}
+
+#sort-box #sorting {
+  display: flex;
+  align-items: center;
+}
+
+#sort-box #sorting .option {
+  font-size: 2em;
+  width: 2em;
+  height: 2em;
+  border: 4px var(--dark) solid;
+  background-color: var(--light);
+  border-radius: 0.25em;
+  margin-left: 0.25em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+#sort-box #sorting .option:hover {
+  background-color: #00ffff;
+}
+
+#cover {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: black;
+  z-index: 5;
+  transition: 2s ease-in-out;
+}
+
+#balloon {
+  flex-direction: column;
+  align-items: flex-start;
+  width: 90%;
+  height: 15em;
+  top: calc(5% + 7.5em);
+}
+
+#balloon h1 {
+  font-weight: 400;
+}
+
+#balloon p {
+  margin-top: 0.5em;
+  font-size: 1.2em;
+  overflow-y: auto;
+}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Open door</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://www.gstatic.com/firebasejs/6.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.5.0/firebase-firestore.js"></script>
+    <script src="./jquery-ui/external/jquery/jquery.js"></script>
+    <script src="./jquery-ui/jquery-ui.min.js"></script>
+  </head>
+  <body>
+    <div id="stage" class="scene">
+      <div class="wall top"></div>
+      <div class="wall bottom"></div>
+      <div class="wall left"></div>
+      <div class="wall right"></div>
+      <div class="face front">
+        <div class="door"><span>390</span></div>
+        <div class="door"><span>390</span></div>
+        <div class="door"><span>390</span></div>
+        <div class="door"><span>390</span></div>
+        <div class="door"><span>390</span></div>
+        <div class="door"><span>390</span></div>
+      </div>
+      <div class="face back">
+        <div class="door"><span>240</span></div>
+        <div class="door"><span>240</span></div>
+        <div class="door"><span>240</span></div>
+        <div class="door"><span>240</span></div>
+        <div class="door"><span>240</span></div>
+        <div class="door"><span>240</span></div>
+      </div>
+      <div id="balloon">
+        <h1>Roar! You forgot to set title!</h1>
+        <p>Roar! You forgor to set text!</p>
+      </div>
+      <div id="msg-box">
+        <p id="msg-text">Bear! You've forgot to set message!</p>
+        <button id="next"></button>
+      </div>
+      <div id="sort-box" style="display: none">
+        <p>Degree of trust, high to low:</p>
+        <div id="sorting">
+          <div class="option">142</div>
+          <div class="option">143</div>
+          <div class="option">145</div>
+          <div class="option">146</div>
+          <div class="option">148</div>
+          <div class="option">149</div>
+        </div>
+        <button id="submit"></button>
+      </div>
+      <div id="cover"></div>
+    </div>
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyCcnAJko9SEks7cmvJL8Jdfac5MZH-VJ2E",
+        authDomain: "open-door-139a6.firebaseapp.com",
+        databaseURL: "https://open-door-139a6.firebaseio.com",
+        projectId: "open-door-139a6",
+        storageBucket: "open-door-139a6.appspot.com",
+        messagingSenderId: "846917381004",
+        appId: "1:846917381004:web:59d80c8b1f70b8d0"
+      };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+    </script>
+    <script src="./DataPoints.js"></script>
+    <script src="./DataObject.js"></script>
+    <script src="./StageObjects.js"></script>
+    <script src="./StageOrder.js"></script>
+    <script src="./Stage.js"></script>
+    <!-- <script src="main2.js"></script> -->
+  </body>
+</html>
