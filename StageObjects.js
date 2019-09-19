@@ -50,26 +50,35 @@ class Cover {
     this.display = "block";
   }
   fadeOut(next) {
-    this.ref.addEventListener("transitionend", e => {
-      this.hide(e);
-      next();
-    });
+    this.ref.addEventListener(
+      "transitionend",
+      e => {
+        // this.hide(e);
+        next();
+      },
+      { once: true }
+    );
     this.ref.style.opacity = 0;
+    this.ref.style.zIndex = -1;
   }
   fadeIn(next) {
-    console.log("Roar");
-    this.show({ target: this.ref });
-    this.ref.addEventListener("transitionend", e => {
-      next();
-    });
+    // this.show({ target: this.ref });
+    this.ref.addEventListener(
+      "transitionend",
+      e => {
+        next();
+      },
+      { once: true }
+    );
     this.ref.style.opacity = 1;
+    this.ref.style.zIndex = 5;
   }
-  show(e) {
-    e.target.style.display = "block";
-  }
-  hide(e) {
-    e.target.style.display = "none";
-  }
+  // show(e) {
+  //   e.target.style.display = "block";
+  // }
+  // hide(e) {
+  //   e.target.style.display = "none";
+  // }
 }
 
 class Face {

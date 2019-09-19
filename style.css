@@ -176,7 +176,7 @@ body {
 
 #msg-box button::before,
 #sort-box button::before {
-  content: ">>";
+  content: "\00BB";
   color: var(--light);
   font-size: 1.5em;
 }
@@ -237,4 +237,35 @@ body {
   margin-top: 0.5em;
   font-size: 1.2em;
   overflow-y: auto;
+}
+
+#start {
+  color: white;
+  position: absolute;
+  z-index: 5;
+  transform: translateX(-50%) translateY(-50%);
+  left: 50%;
+  top: 50%;
+  border: 10px white solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 10em;
+  height: 10em;
+  cursor: pointer;
+}
+
+#start:hover {
+  width: 12em;
+  height: 12em;
+}
+
+#start span {
+  font-size: 5em;
+  transform: translateX(0.06em) translateY(-0.06em);
+}
+
+#start:hover > span {
+  font-size: 6em;
 }

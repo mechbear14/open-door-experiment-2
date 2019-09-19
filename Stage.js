@@ -1,5 +1,5 @@
-let currentLine = 0;
-let currentStage = 0;
+let currentLine = 12;
+// let currentStage = 0;
 
 let points = [];
 let currentLocation = 0;
@@ -10,6 +10,7 @@ let progress = [];
 let postTest = [];
 
 const WINTERM = 139;
+let timeout = 0;
 
 // Script
 const messages = [
@@ -52,64 +53,80 @@ const messages = [
 
 let operations = [
   () => {
+    // 0
     sessionStorage.setItem("open_door_start_time", Date.now());
-    messageBoxObj.hide();
-    sortBoxObj.hide();
-    balloonObj.hide();
     messageBoxObj.setAction(nextStage);
     messageBoxObj.setMessage(messages[currentLine]);
     messageBoxObj.show();
-  },
-  () => {
     currentLine++;
-    messageBoxObj.setMessage(messages[currentLine]);
   },
   () => {
+    // 1
+    messageBoxObj.setMessage(messages[currentLine]);
     currentLine++;
-    messageBoxObj.setMessage(messages[currentLine]);
   },
   () => {
+    // 2
+    messageBoxObj.setMessage(messages[currentLine]);
     currentLine++;
-    messageBoxObj.setMessage(messages[currentLine]);
   },
   () => {
+    // 3
+    messageBoxObj.setMessage(messages[currentLine]);
     currentLine++;
-    messageBoxObj.setMessage(messages[currentLine]);
   },
   () => {
+    // 4
+    messageBoxObj.setMessage(messages[currentLine]);
     currentLine++;
-    messageBoxObj.setMessage(messages[currentLine]);
   },
   () => {
+    // 5
+    messageBoxObj.setMessage(messages[currentLine]);
     currentLine++;
-    messageBoxObj.setMessage(messages[currentLine]);
   },
   () => {
+    // 6
+    messageBoxObj.setMessage(messages[currentLine]);
     currentLine++;
-    messageBoxObj.setMessage(messages[currentLine]);
   },
   () => {
+    // 7
+    messageBoxObj.setMessage(messages[currentLine]);
     currentLine++;
-    messageBoxObj.setMessage(messages[currentLine]);
   },
   () => {
+    // 8
+    messageBoxObj.setMessage(messages[currentLine]);
     currentLine++;
-    messageBoxObj.setMessage(messages[currentLine]);
   },
   () => {
+    // 9
+    messageBoxObj.setMessage(messages[currentLine]);
     currentLine++;
-    messageBoxObj.setMessage(messages[currentLine]);
   },
   () => {
+    // 10
+    messageBoxObj.setMessage(messages[currentLine]);
     currentLine++;
-    messageBoxObj.setMessage(messages[currentLine]);
   },
   () => {
+    // 11
+    messageBoxObj.setMessage(messages[currentLine]);
     currentLine++;
-    messageBoxObj.setMessage(messages[currentLine]);
   },
   () => {
-    messageBoxObj.hide();
+    // 12
+    messageBoxObj.show(); // Debug purpose
+    messageBoxObj.setMessage(messages[currentLine]);
+    messageBoxObj.setAction(() => {
+      messageBoxObj.hide();
+      currentLine++;
+      nextStage();
+    });
+  },
+  () => {
+    // 13
     setupData();
     setupRoutes();
     currentLocation = 0;
@@ -117,152 +134,257 @@ let operations = [
     sortBoxObj.init();
     frontFaceObj.setContents(currentOptions);
     coverObj.fadeOut(() => {
-      currentLine++;
       messageBoxObj.setMessage(messages[currentLine]);
+      messageBoxObj.setAction(nextStage);
       messageBoxObj.show();
+      currentLine++;
     });
   },
   () => {
-    currentLine++;
+    // 14
     messageBoxObj.setMessage(messages[currentLine]);
     frontFaceObj.enableHover(hoverDoor, leaveDoor);
-  },
-  () => {
     currentLine++;
-    messageBoxObj.setMessage(messages[currentLine]);
   },
   () => {
+    // 15
+    messageBoxObj.setMessage(messages[currentLine]);
     currentLine++;
-    messageBoxObj.setMessage(messages[currentLine]);
   },
   () => {
+    // 16
+    messageBoxObj.setMessage(messages[currentLine]);
     currentLine++;
-    messageBoxObj.setMessage(messages[currentLine]);
   },
   () => {
+    // 17
+    messageBoxObj.setMessage(messages[currentLine]);
     currentLine++;
-    messageBoxObj.setMessage(messages[currentLine]);
   },
   () => {
-    sortBoxObj.setOptions(currentOptions);
-    sortBoxObj.setAction(() => {
-      let result = getSortBoxResult();
-      currentLocation = result[0];
-      preTest = result.slice();
-      // sendData(
-      //   sessionStorage.getItem("open_door_start_time"),
-      //   "pre-test",
-      //   result,
-      //   docRef => {
-      //     console.log("Document written with ID: ", docRef.id);
-      //     nextLine();
-      //   }
-      // );
-      nextStage();
+    // 18
+    messageBoxObj.setMessage(messages[currentLine]);
+    messageBoxObj.setAction(() => {
+      sortBoxObj.setOptions(currentOptions);
+      sortBoxObj.setAction(() => {
+        let result = getSortBoxResult();
+        currentLocation = result[0];
+        preTest = result.slice();
+        // sendData(
+        //   sessionStorage.getItem("open_door_start_time"),
+        //   "pre-test",
+        //   result,
+        //   docRef => {
+        //     console.log("Document written with ID: ", docRef.id);
+        //     nextLine();
+        //   }
+        // );
+        currentLine++;
+        nextStage();
+      });
+      messageBoxObj.hide();
+      sortBoxObj.show();
     });
-    messageBoxObj.hide();
-    sortBoxObj.show();
   },
   () => {
+    // 19
     frontFaceObj.disableHover();
     frontFaceObj.disableClick();
-    currentLine++;
     messageBoxObj.setMessage(`${messages[currentLine]} ${currentLocation}`);
+    messageBoxObj.setAction(nextStage);
     messageBoxObj.show();
     sortBoxObj.hide();
+    currentLine++;
   },
   () => {
+    // 20
     messageBoxObj.hide();
     let toOpen = frontFaceObj.contents.find(
       door => door.dataId === currentLocation
     );
-    toOpen.open(
-      () => {
-        updateState(toOpen.dataId, new Array());
-        frontFaceObj.disableClick();
-        frontFaceObj.disableHover();
-      },
-      () => {
-        frontFaceObj.moveOut();
-        backFaceObj.moveForward(() => {
-          makeNewFaces();
-          currentLine++;
-          messageBoxObj.setMessage(messages[currentLine]);
-          messageBoxObj.show();
-        });
-      }
-    );
+    toOpen.open(openAction(toOpen.dataId, progress), () => {
+      postOpenAction();
+      frontFaceObj.disableHover();
+      frontFaceObj.disableClick();
+      messageBoxObj.setMessage(messages[currentLine]);
+      messageBoxObj.show();
+      currentLine++;
+    });
   },
   () => {
-    currentLine++;
+    // 21
     messageBoxObj.setMessage(messages[currentLine]);
-  },
-  () => {
     currentLine++;
-    messageBoxObj.setMessage(messages[currentLine]);
   },
   () => {
+    // 22
+    messageBoxObj.setMessage(messages[currentLine]);
     currentLine++;
-    messageBoxObj.setMessage(messages[currentLine]);
   },
   () => {
+    // 23
+    messageBoxObj.setMessage(messages[currentLine]);
     currentLine++;
+  },
+  () => {
+    // 24
     messageBoxObj.setMessage(messages[currentLine]);
+    messageBoxObj.setAction(() => {
+      frontFaceObj.enableHover(hoverDoor, leaveDoor);
+      frontFaceObj.enableClick(openDoor);
+      messageBoxObj.hide();
+      timeout = window.setTimeout(operations[30], 60000);
+      currentLine++;
+    });
   },
   () => {
-    frontFaceObj.enableHover(hoverDoor, leaveDoor);
-    frontFaceObj.enableClick(openDoor);
-    messageBoxObj.hide();
-  },
-  () => {
+    // 25
     messageBoxObj.setAction();
     // sendData(
     //   sessionStorage.getItem("open_door_start_time"),
     //   "progress",
     //   progress,
     //   () => {
+    currentLine = 25;
     console.log(progress);
-    currentLine = 26;
+    window.clearTimeout(timeout);
     messageBoxObj.setMessage(messages[currentLine]);
+    currentLine++;
     messageBoxObj.setAction(nextStage);
     messageBoxObj.show();
     //   }
     // );
   },
   () => {
-    coverObj.fadeIn();
-    currentLine++;
-    messageBoxObj.setMessage(messages[currentLine]);
-  },
-  () => {
-    currentLine++;
-    messageBoxObj.setMessage(messages[currentLine]);
-  },
-  () => {
-    currentLine++;
-    messageBoxObj.setMessage(messages[currentLine]);
-  },
-  () => {
-    messageBoxObj.hide();
-    frontFaceObj.enableHover(hoverDoor, leaveDoor);
-    sortBoxObj.setOptions(currentOptions);
-    sortBoxObj.setAction(() => {
-      let result = getSortBoxResult();
-      postTest = result.slice();
-      // sendData(
-      //   sessionStorage.getItem("open_door_start_time"),
-      //   "post-test",
-      //   result,
-      //   docRef => {
-      //     console.log("Document written with ID: ", docRef.id);
-      //     nextLine();
-      //   }
-      // );
-      nextStage();
+    // 26
+    coverObj.fadeIn(() => {
+      currentLocation = 0;
+      currentOptions = points[0].options.slice();
+      frontFaceObj.setContents(currentOptions);
     });
-    sortBoxObj.show();
+    messageBoxObj.setMessage(messages[currentLine]);
+    currentLine++;
   },
-  () => {}
+  () => {
+    // 27
+    messageBoxObj.setMessage(messages[currentLine]);
+    currentLine++;
+  },
+  () => {
+    // 28
+    coverObj.fadeOut();
+    messageBoxObj.setMessage(messages[currentLine]);
+    messageBoxObj.setAction(() => {
+      sortBoxObj.setOptions(currentOptions);
+      frontFaceObj.enableHover(hoverDoor, leaveDoor);
+      sortBoxObj.setAction(() => {
+        let result = getSortBoxResult();
+        // currentLocation = result[0];
+        postTest = result.slice();
+        // sendData(
+        //   sessionStorage.getItem("open_door_start_time"),
+        //   "post-test",
+        //   result,
+        //   docRef => {
+        //     console.log("Document written with ID: ", docRef.id);
+        //     nextLine();
+        //   }
+        // );
+        frontFaceObj.disableHover();
+        currentLine++;
+        nextStage();
+      });
+      messageBoxObj.hide();
+      sortBoxObj.show();
+    });
+  },
+  () => {
+    // 29
+    sortBoxObj.hide();
+    messageBoxObj.setMessage(messages[currentLine]);
+    messageBoxObj.setAction(() => {
+      messageBoxObj.hide();
+      coverObj.fadeIn(() => {
+        currentLine++;
+        location = "ux.html";
+      });
+    });
+    messageBoxObj.show();
+  },
+  () => {
+    // 30
+    currentLine = 30;
+    frontFaceObj.disableClick();
+    frontFaceObj.disableHover();
+    messageBoxObj.setMessage(messages[currentLine]);
+    currentLine++;
+    messageBoxObj.setAction(nextStage);
+    messageBoxObj.show();
+  },
+  () => {
+    // 31
+    coverObj.fadeIn(() => {
+      currentLocation = 0;
+      currentOptions = points[0].options.slice();
+      frontFaceObj.setContents(currentOptions);
+    });
+    messageBoxObj.setMessage(messages[currentLine]);
+    currentLine++;
+  },
+  () => {
+    // 32
+    messageBoxObj.setMessage(messages[currentLine]);
+    currentLine++;
+  },
+  () => {
+    // 33
+    coverObj.fadeOut();
+    messageBoxObj.setMessage(messages[currentLine]);
+    messageBoxObj.setAction(() => {
+      sortBoxObj.setOptions(currentOptions);
+      frontFaceObj.enableHover(hoverDoor, leaveDoor);
+      sortBoxObj.setAction(() => {
+        let result = getSortBoxResult();
+        // currentLocation = result[0];
+        postTest = result.slice();
+        // sendData(
+        //   sessionStorage.getItem("open_door_start_time"),
+        //   "post-test",
+        //   result,
+        //   docRef => {
+        //     console.log("Document written with ID: ", docRef.id);
+        //     nextLine();
+        //   }
+        // );
+        frontFaceObj.disableHover();
+        currentLine++;
+        nextStage();
+      });
+      messageBoxObj.hide();
+      sortBoxObj.show();
+    });
+  },
+  () => {
+    // 34
+    sortBoxObj.hide();
+    messageBoxObj.setMessage(messages[currentLine]);
+    messageBoxObj.setAction(() => {
+      coverObj.fadeIn(() => {
+        location = "ux.html";
+        currentLine++;
+      });
+    });
+    messageBoxObj.show();
+  }
 ];
 
-operations[0]();
+const startBtn = document.getElementById("start");
+startBtn.addEventListener("click", function(e) {
+  operations[currentLine]();
+  const stage = document.getElementById("stage");
+  stage.removeChild(startBtn);
+});
+
+messageBoxObj.hide();
+sortBoxObj.hide();
+balloonObj.hide();

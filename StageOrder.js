@@ -59,11 +59,15 @@ function setupRoutes() {
       points[des].options.push(src);
     }
   }
+  points.forEach(point => {
+    shuffleArray(point.options);
+  });
 }
 
 function nextStage() {
-  currentStage++;
-  operations[currentStage]();
+  // currentStage++;
+  // operations[currentStage]();
+  operations[currentLine]();
 }
 
 function getSortBoxResult() {
@@ -116,7 +120,7 @@ function openAction(id, target) {
     frontFaceObj.disableClick();
     frontFaceObj.disableHover();
     if (currentLocation === WINTERM) {
-      operations[27]();
+      operations[25]();
     }
   };
 }
@@ -180,4 +184,11 @@ function updateState(location, target) {
   backFaceObj.setContents(currentOptions);
   console.log("Calculate distance from points[location] to each noise point");
   console.log("Update volume of each noise source");
+}
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
 }
